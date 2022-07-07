@@ -1,23 +1,18 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const thoughtSchema = new mongoose.Schema({
+  thoughtText: { type: String, required: true, minLength: 1, maxLength: 280 },
+  createdAt: { type: Date, default: Date.now },
   username: { type: String, required: true },
-  email: { type: String, required: true },
-  thoughts: [
+  reactions: [
     {
       type: Schema.Types.ObjectId,
-      ref: 'thoughts',
-    },
-  ],
-  friends: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'user',
-    },
-  ],
+      ref: 'reaction'
+    }
+  ]
 });
 
-userSchema
+thoughtSchema
   .virtual('friendCount')
   .get(function () {
     return this.friends.count;
